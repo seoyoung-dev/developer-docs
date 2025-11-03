@@ -1867,7 +1867,7 @@
     tslib "^2.6.0"
     utility-types "^3.10.0"
 
-"@docusaurus/theme-search-algolia@3.9.2":
+"@docusaurus/theme-search-algolia@3.9.2", "@docusaurus/theme-search-algolia@^3.9.2":
   version "3.9.2"
   resolved "https://registry.yarnpkg.com/@docusaurus/theme-search-algolia/-/theme-search-algolia-3.9.2.tgz#420fd5b27fc1673b48151fdc9fe7167ba135ed50"
   integrity sha512-GBDSFNwjnh5/LdkxCKQHkgO2pIMX1447BxYUBG2wBiajS21uj64a+gH/qlbQjDLxmGrbrllBrtJkUHxIsiwRnw==
