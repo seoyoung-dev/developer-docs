@@ -1,0 +1,1348 @@
+openapi: 3.0.0
+servers:
+  - url: https://petstore.swagger.io/v2
+    description: 기본 서버
+  - url: https://petstore.swagger.io/sandbox
+    description: 샌드박스 서버
+  - url: http://127.0.0.1:4010
+    description: Prism 모의 API(로컬)
+info:
+  description: |
+    이 문서는 샘플 Petstore 서버에 대한 API 문서입니다.
+    Swagger에 대한 더 많은 정보는
+    [http://swagger.io](http://swagger.io) 또는 [irc.freenode.net, #swagger](http://swagger.io/irc/)에서 확인할 수 있습니다.
+    이 샘플에서는 권한 필터를 테스트하기 위해 `special-key` 라는 API 키를 사용할 수 있습니다.
+
+    ## 소개
+    본 API는 **OpenAPI 형식**으로 문서화되었으며,
+    [swagger.io](http://swagger.io) 팀이 제공한 [Petstore 샘플](http://petstore.swagger.io/)을 기반으로 합니다.
+    또한 [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
+    도구와 [ReDoc](https://github.com/Redocly/redoc) 문서 기능을 설명하기 위해 **확장**되었습니다.
+    표준 OpenAPI 문법과 함께 몇 가지 [벤더 확장](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md)도 사용합니다.
+
+    ## OpenAPI 명세
+    본 API는 **OpenAPI 형식**으로 문서화되었으며,
+    [swagger.io](http://swagger.io) 팀이 제공한 [Petstore 샘플](http://petstore.swagger.io/)을 기반으로 합니다.
+    또한 [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
+    도구와 [ReDoc](https://github.com/Redocly/redoc) 문서 기능을 설명하기 위해 **확장**되었습니다.
+    표준 OpenAPI 문법과 함께 몇 가지 [벤더 확장](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md)도 사용합니다.
+
+    ## 교차 출처 리소스 공유(CORS)
+    이 API는 [W3C 사양](https://www.w3.org/TR/cors/)을 준수하여 CORS가 구현되어 있습니다.
+    이를 통해 브라우저에서 도메인 간 통신이 허용됩니다.
+    모든 응답은 와일드카드 동일 출처 정책을 적용하여, 어느 사이트의 코드에서든 완전히 공개적으로 접근할 수 있습니다.
+
+    ## 인증
+
+    Petstore는 두 가지 인증 방식을 제공합니다:
+      - API Key
+      - OAuth2
+
+    OAuth2는 웹·모바일·데스크톱 애플리케이션에서
+    간단하고 표준화된 방법으로 안전한 인가를 제공하는 오픈 프로토콜입니다.
+  version: 2.0.0
+  title: 스웨거 펫스토어 YAML
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    name: API 지원
+    email: apiteam@swagger.io
+    url: https://github.com/Redocly/redoc
+  x-logo:
+    url: 'https://redocly.github.io/redoc/petstore-logo.png'
+    altText: 펫스토어 로고
+  x-dark-logo:
+    url: '/img/petstore-logo-dark.png'
+    altText: '펫스토어 다크 로고'
+  license:
+    name: 아파치 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+externalDocs:
+  description: OpenAPI 명세 전용 GitHub 저장소를 만드는 방법을 확인하세요.
+  url: 'https://github.com/Rebilly/generator-openapi-repo'
+tags:
+  - name: pet
+    description: 반려동물 관련 모든 기능
+    x-displayName: 반려동물
+  - name: store
+    description: Petstore 주문 접근
+    x-displayName: 펫스토어 주문
+  - name: user
+    description: 사용자 관련 작업
+    x-displayName: 사용자
+  - name: pet_model
+    x-displayName: 반려동물 모델
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/Pet" />
+  - name: store_model
+    x-displayName: 주문 모델
+    description: |
+      <SchemaDefinition schemaRef="#/components/schemas/Order" exampleRef="#/components/examples/Order" showReadOnly={true} showWriteOnly={true} />
+x-tagGroups:
+  - name: 일반
+    tags:
+      - pet
+      - store
+  - name: 사용자 관리
+    tags:
+      - user
+  - name: 모델
+    tags:
+      - pet_model
+      - store_model
+paths:
+  /pet:
+    parameters:
+      - name: Accept-Language
+        in: header
+        description: '선호하는 메시지 언어. 지원 값: en-AU, en-CA, en-GB, en-US'
+        example: en-US
+        required: false
+        schema:
+          type: string
+          default: en-AU
+      - name: cookieParam
+        in: cookie
+        description: 쿠키 파라미터
+        required: true
+        schema:
+          type: integer
+          format: int64
+    post:
+      tags:
+        - pet
+      summary: 스토어에 새 반려동물 추가
+      description: 스토어 인벤토리에 새 반려동물을 추가합니다.
+      operationId: addPet
+      responses:
+        '200':
+          description: |
+            정상입니다. 다음은 MDX 예시입니다:
+
+            :::note
+
+            일부 내용이지만 마크다운은 지원되지 않습니다 :(
+
+            :::
+
+            :::tip
+            구분자 사이 앞뒤 공백 없이 쓰는 TIP 예시입니다.
+            :::
+
+            :::info
+
+            _마크다운_ `문법`을 포함한 **콘텐츠**입니다. [이 `api`](#)를 확인하세요.
+
+            | 월        | 저축    |
+            | --------- | ------- |
+            | 1월       | $250    |
+            | 2월       | $80     |
+            | 3월       | $420    |
+
+            흠.....
+
+            :::
+
+            :::warning
+
+            _마크다운_ `문법`을 포함한 **콘텐츠**입니다. 아직 지원되지 않는 [이 `api`](#)를 확인해 보세요 :(
+
+            :::
+
+            :::danger
+
+            일반 텍스트
+
+            더 많은 일반 텍스트
+
+            그리고 더 많이
+
+            :::
+
+            **코드 스니펫**!
+
+            ```python
+            print("hello")
+            ```
+
+            _그리고_ 표!
+
+            | 월        | 저축    |
+            | --------- | ------- |
+            | 1월       | $250    |
+            | 2월       | $80     |
+            | 3월       | $420    |
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    oneOf:
+                      - type: string
+                      - type: object
+        '405':
+          description: 유효하지 않은 입력
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+        - api_key: []
+        - ApiKeyAuth: []
+        - BasicAuth: []
+        - BearerAuth: []
+        - OAuth2: []
+        - OpenID: []
+
+      x-codeSamples:
+        - lang: 'C#'
+          source: |
+            PetStore.v1.Pet pet = new PetStore.v1.Pet();
+            pet.setApiKey("your api key");
+            pet.petType = PetStore.v1.Pet.TYPE_DOG;
+            pet.name = "Rex";
+            // set other fields
+            PetStoreResponse response = pet.create();
+            if (response.statusCode == HttpStatusCode.Created)
+            {
+              // 성공적으로 생성됨
+            }
+            else
+            {
+              // 오류 발생 -- 응답에서 오류를 확인하세요
+              Console.WriteLine(response.getRawResponse());
+            }
+        - lang: PHP
+          label: 사용자 지정
+          source: |
+            $form = new \PetStore\Entities\Pet();
+            $form->setPetType("Dog");
+            $form->setName("Rex");
+            // 다른 필드 설정
+            try {
+                $pet = $client->pets()->create($form);
+            } catch (UnprocessableEntityException $e) {
+                var_dump($e->getErrors());
+            }
+      requestBody:
+        $ref: '#/components/requestBodies/Pet'
+    put:
+      tags:
+        - pet
+      summary: 기존 반려동물 수정
+      description: ''
+      operationId: updatePet
+      responses:
+        '400':
+          description: 유효하지 않은 ID 제공
+        '404':
+          description: 반려동물을 찾을 수 없음
+        '405':
+          description: 검증 예외
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+      x-codeSamples:
+        - lang: PHP
+          source: |
+            $form = new \PetStore\Entities\Pet();
+            $form->setPetId(1);
+            $form->setPetType("Dog");
+            $form->setName("Rex");
+            // 다른 필드 설정
+            try {
+                $pet = $client->pets()->update($form);
+            } catch (UnprocessableEntityException $e) {
+                var_dump($e->getErrors());
+            }
+      requestBody:
+        $ref: '#/components/requestBodies/Pet'
+  '/pet/{petId}':
+    get:
+      tags:
+        - pet
+      summary: ID로 반려동물 조회
+      description: 단일 반려동물을 반환합니다
+      operationId: getPetById
+      parameters:
+        - name: petId
+          in: path
+          description: 반환할 반려동물의 ID
+          required: true
+          deprecated: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 성공적인 처리
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Pet'
+
+        '400':
+          description: 유효하지 않은 ID 제공
+        '404':
+          description: 반려동물을 찾을 수 없음
+      security:
+        - api_key: []
+    post:
+      tags:
+        - pet
+      summary: 폼 데이터로 스토어의 반려동물 정보 업데이트
+      description: ''
+      operationId: updatePetWithForm
+      parameters:
+        - name: petId
+          in: path
+          description: 업데이트할 반려동물의 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '405':
+          description: 유효하지 않은 입력
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: 반려동물의 변경될 이름
+                  type: string
+                status:
+                  description: 반려동물의 변경될 상태
+                  type: string
+    delete:
+      tags:
+        - pet
+      summary: 반려동물 삭제
+      description: ''
+      operationId: deletePet
+      parameters:
+        - name: api_key
+          in: header
+          required: false
+          schema:
+            type: string
+          example: 'Bearer <TOKEN>'
+        - name: petId
+          in: path
+          description: 삭제할 반려동물 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: 유효하지 않은 반려동물 값
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+  '/pet/{petId}/uploadImage':
+    post:
+      tags:
+        - pet
+      summary: 이미지 업로드
+      description: ''
+      operationId: uploadFile
+      parameters:
+        - name: petId
+          in: path
+          description: 이미지를 업로드할 반려동물의 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 성공적인 처리
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+  /pet/findByStatus:
+    get:
+      tags:
+        - pet
+      summary: 상태로 반려동물 검색
+      description: 상태 값을 콤마로 구분해 여러 개 전달할 수 있습니다
+      operationId: findPetsByStatus
+      parameters:
+        - name: status
+          in: query
+          description: 필터에 사용할 상태 값
+          required: true
+          style: form
+          schema:
+            type: array
+            minItems: 1
+            maxItems: 3
+            items:
+              type: string
+              enum:
+                - available
+                - pending
+                - sold
+              x-enumDescriptions:
+                available: 반려동물이 이용 가능함
+                pending: 반려동물이 판매 진행 중임
+                sold: 반려동물이 판매 완료됨
+              default: available
+      responses:
+        '200':
+          description: 성공적인 처리
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+        '400':
+          description: 유효하지 않은 상태 값
+      security:
+        - api_key: []
+  /pet/findByTags:
+    get:
+      tags:
+        - pet
+      summary: 태그로 반려동물 검색
+      description: >-
+        태그를 콤마로 구분하여 여러 개 전달할 수 있습니다. 테스트용 예: tag1, tag2, tag3.
+      operationId: findPetsByTags
+      deprecated: true
+      parameters:
+        - name: tags
+          in: query
+          description: 필터링할 태그
+          required: true
+          style: form
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: 성공적인 처리
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+        '400':
+          description: 유효하지 않은 태그 값
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+  /store/inventory:
+    get:
+      tags:
+        - store
+      summary: 상태별 반려동물 재고 반환
+      description: 상태 코드별 수량 맵을 반환합니다
+      operationId: getInventory
+      responses:
+        '200':
+          description: 성공적인 처리
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: integer
+                  format: int32
+      security:
+        - api_key: []
+  /store/order:
+    post:
+      tags:
+        - store
+      summary: 반려동물 주문 생성
+      description: ''
+      operationId: placeOrder
+      responses:
+        '200':
+          description: 성공적인 처리
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: 유효하지 않은 주문
+          content:
+            application/json:
+              example:
+                status: 400
+                message: 'Invalid Order'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+            examples:
+              OrderDelivered:
+                summary: 주문 배송 완료
+                value:
+                  quantity: 4
+                  shipDate: 2022-10-12
+                  status: delivered
+                  requestId: 444-4444-444-4444
+              OrderPlaced:
+                summary: 주문 접수
+                value:
+                  quantity: 10
+                  shipDate: 2022-10-01
+                  status: placed
+                  requestId: 111-222-333-444
+              OrderApproved:
+                summary: 주문 승인
+                value:
+                  quantity: 1000
+                  shipDate: 2022-09-01
+                  status: approved
+                  requestId: 000-111-222-333
+        description: 반려동물 구매를 위한 주문이 생성됩니다
+        required: true
+  '/store/order/{orderId}':
+    get:
+      tags:
+        - store
+      summary: ID로 구매 주문 조회
+      description: >-
+        유효한 응답을 얻으려면 값이 <= 5 또는 > 10 인 정수 ID를 사용하세요.
+        다른 값은 예외가 발생합니다.
+      operationId: getOrderById
+      parameters:
+        - name: orderId
+          in: path
+          description: 조회할 주문의 ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+            maximum: 5
+      responses:
+        '200':
+          description: 성공적인 처리
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: 유효하지 않은 ID 제공
+        '404':
+          description: 주문을 찾을 수 없음
+    delete:
+      tags:
+        - store
+      summary: ID로 구매 주문 삭제
+      description: >-
+        유효한 응답을 얻으려면 1000 미만의 정수 ID를 사용하세요. 1000 이상 또는 정수가 아니면 API 오류가 발생합니다.
+      operationId: deleteOrder
+      parameters:
+        - name: orderId
+          in: path
+          description: 삭제할 주문의 ID
+          required: true
+          schema:
+            type: string
+            minimum: 1
+      responses:
+        '400':
+          description: 유효하지 않은 ID 제공
+        '404':
+          description: 주문을 찾을 수 없음
+  /store/subscribe:
+    post:
+      tags:
+        - store
+      summary: 스토어 이벤트 구독
+      description: 스토어 이벤트에 대한 구독을 추가합니다
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                callbackUrl:
+                  type: string
+                  format: uri
+                  description: 원하는 이벤트가 발생하면 서버가 호출할 URL
+                  example: https://myserver.com/send/callback/here
+                eventName:
+                  type: string
+                  description: 구독할 이벤트 이름
+                  enum:
+                    - orderInProgress
+                    - orderShipped
+                    - orderDelivered
+                  example: orderInProgress
+              required:
+                - callbackUrl
+                - eventName
+      responses:
+        '201':
+          description: 구독이 추가되었습니다
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscriptionId:
+                    type: string
+                    example: AAA-123-BBB-456
+      callbacks:
+        orderInProgress:
+          '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
+            servers:
+              - url: //callback-url.path-level/v1
+                description: 경로 수준 서버 1
+              - url: //callback-url.path-level/v2
+                description: 경로 수준 서버 2
+            post:
+              summary: 주문 진행 중(요약)
+              description: 주문 상태가 "inProgress"로 변경될 때마다 트리거되는 콜백(설명)
+              externalDocs:
+                description: 더 알아보기
+                url: 'https://more-details.com/demo'
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2018-10-19T16:46:45Z'
+                        status:
+                          type: string
+                          example: 'inProgress'
+                  application/xml:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                    example: |
+                      <?xml version="1.0" encoding="UTF-8"?>
+                      <root>
+                        <orderId>123</orderId>
+                        <status>inProgress</status>
+                        <timestamp>2018-10-19T16:46:45Z</timestamp>
+                      </root>
+              responses:
+                '200':
+                  description: 콜백이 성공적으로 처리되어 재시도하지 않습니다
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          someProp:
+                            type: string
+                            example: '123'
+                '299':
+                  description: 구독 취소 응답
+                '500':
+                  description: 콜백 처리 실패로 재시도 예정
+              x-codeSamples:
+                - lang: 'C#'
+                  source: |
+                    PetStore.v1.Pet pet = new PetStore.v1.Pet();
+                    pet.setApiKey("your api key");
+                    pet.petType = PetStore.v1.Pet.TYPE_DOG;
+                    pet.name = "Rex";
+                    // 다른 필드 설정
+                    PetStoreResponse response = pet.create();
+                    if (response.statusCode == HttpStatusCode.Created)
+                    {
+                      // 성공적으로 생성됨
+                    }
+                    else
+                    {
+                      // 오류 발생 -- 응답에서 오류를 확인하세요
+                      Console.WriteLine(response.getRawResponse());
+                    }
+                - lang: PHP
+                  source: |
+                    $form = new \PetStore\Entities\Pet();
+                    $form->setPetType("Dog");
+                    $form->setName("Rex");
+                    // 다른 필드 설정
+                    try {
+                        $pet = $client->pets()->create($form);
+                    } catch (UnprocessableEntityException $e) {
+                        var_dump($e->getErrors());
+                    }
+            put:
+              description: 주문 진행 중(설명만)
+              servers:
+                - url: //callback-url.operation-level/v1
+                  description: 오퍼레이션 수준 서버 1(오퍼레이션 오버라이드)
+                - url: //callback-url.operation-level/v2
+                  description: 오퍼레이션 수준 서버 2(오퍼레이션 오버라이드)
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2018-10-19T16:46:45Z'
+                        status:
+                          type: string
+                          example: 'inProgress'
+                  application/xml:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                    example: |
+                      <?xml version="1.0" encoding="UTF-8"?>
+                      <root>
+                        <orderId>123</orderId>
+                        <status>inProgress</status>
+                        <timestamp>2018-10-19T16:46:45Z</timestamp>
+                      </root>
+              responses:
+                '200':
+                  description: 콜백이 성공적으로 처리되어 재시도하지 않습니다
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          someProp:
+                            type: string
+                            example: '123'
+        orderShipped:
+          '{$request.body#/callbackUrl}?event={$request.body#/eventName}':
+            post:
+              description: 주문이 수취인에게 배송될 때마다 트리거되는 콜백
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2018-10-19T16:46:45Z'
+                        estimatedDeliveryDate:
+                          type: string
+                          format: date-time
+                          example: '2018-11-11T16:00:00Z'
+              responses:
+                '200':
+                  description: 콜백이 성공적으로 처리되어 재시도하지 않습니다
+        orderDelivered:
+          'http://notificationServer.com?url={$request.body#/callbackUrl}&event={$request.body#/eventName}':
+            post:
+              deprecated: true
+              summary: 주문 배송 완료
+              description: 주문이 수취인에게 인도될 때마다 트리거되는 콜백
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          example: '123'
+                        timestamp:
+                          type: string
+                          format: date-time
+                          example: '2018-10-19T16:46:45Z'
+              responses:
+                '200':
+                  description: 콜백이 성공적으로 처리되어 재시도하지 않습니다
+  /user:
+    post:
+      tags:
+        - user
+      summary: 사용자 생성
+      description: 로그인된 사용자만 수행할 수 있습니다.
+      operationId: createUser
+      responses:
+        default:
+          description: 성공적인 처리
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: 생성할 사용자 객체
+        required: true
+  '/user/{username}':
+    get:
+      tags:
+        - user
+      summary: 사용자 이름으로 사용자 조회
+      description: ''
+      operationId: getUserByName
+      parameters:
+        - name: username
+          in: path
+          description: '조회할 사용자 이름. 테스트용: user1'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 성공적인 처리
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: 유효하지 않은 사용자 이름 제공
+        '404':
+          description: 사용자를 찾을 수 없음
+    put:
+      tags:
+        - user
+      summary: 사용자 수정
+      description: 로그인된 사용자만 수행할 수 있습니다.
+      operationId: updateUser
+      parameters:
+        - name: username
+          in: path
+          description: 삭제할 사용자 이름
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: 유효하지 않은 사용자 제공
+        '404':
+          description: 사용자를 찾을 수 없음
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: 수정할 사용자 객체
+        required: true
+    delete:
+      tags:
+        - user
+      summary: 사용자 삭제
+      description: 로그인된 사용자만 수행할 수 있습니다.
+      operationId: deleteUser
+      parameters:
+        - name: username
+          in: path
+          description: 삭제할 사용자 이름
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: 유효하지 않은 사용자 이름 제공
+        '404':
+          description: 사용자를 찾을 수 없음
+  /user/createWithArray:
+    post:
+      tags:
+        - user
+      summary: 배열 입력으로 사용자 목록 생성
+      description: ''
+      operationId: createUsersWithArrayInput
+      responses:
+        default:
+          description: 성공적인 처리
+      requestBody:
+        $ref: '#/components/requestBodies/UserArray'
+  /user/createWithList:
+    post:
+      tags:
+        - user
+      summary: 리스트 입력으로 사용자 목록 생성
+      description: ''
+      operationId: createUsersWithListInput
+      responses:
+        default:
+          description: 성공적인 처리
+      requestBody:
+        $ref: '#/components/requestBodies/UserArray'
+  /user/login:
+    get:
+      tags:
+        - user
+      summary: 사용자 로그인
+      description: ''
+      operationId: loginUser
+      parameters:
+        - name: username
+          in: query
+          description: 로그인용 사용자 이름
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: 일반 텍스트 비밀번호
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 성공적인 처리
+          headers:
+            X-Rate-Limit:
+              description: 사용자당 시간당 호출 허용량
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: 토큰 만료(UTC)
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                response:
+                  summary: |
+                    **Docusaurus** `markdown`을 요약에 사용하는 예시입니다. 주의: admonition은 완전 지원되지 않습니다.
+                  value: OK
+            application/xml:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: <Message> OK </Message>
+            text/plain:
+              examples:
+                response:
+                  value: OK
+        '400':
+          description: 유효하지 않은 사용자 이름/비밀번호
+  /user/logout:
+    get:
+      tags:
+        - user
+      summary: 현재 로그인된 사용자 세션 로그아웃
+      description: ''
+      operationId: logoutUser
+      responses:
+        default:
+          description: 성공적인 처리
+components:
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+    Cat:
+      x-tags:
+        - pet
+      description: 고양이에 대한 표현
+      allOf:
+        - $ref: '#/components/schemas/Pet'
+        - type: object
+          properties:
+            huntingSkill:
+              type: string
+              description: 사냥 능력 측정 값
+              default: lazy
+              example: adventurous
+              enum:
+                - clueless
+                - lazy
+                - adventurous
+                - aggressive
+          required:
+            - huntingSkill
+    Category:
+      type: object
+      properties:
+        id:
+          description: 카테고리 ID
+          allOf:
+            - $ref: '#/components/schemas/Id'
+        name:
+          description: 카테고리명
+          type: string
+          minLength: 1
+        sub:
+          description: 하위 카테고리 테스트
+          type: object
+          properties:
+            prop1:
+              type: string
+              description: 예시 속성
+      xml:
+        name: Category
+    Dog:
+      description: 개에 대한 표현
+      allOf:
+        - $ref: '#/components/schemas/Pet'
+        - type: object
+          properties:
+            packSize:
+              type: integer
+              format: int32
+              description: 무리의 크기
+              default: 1
+              minimum: 1
+          required:
+            - packSize
+    HoneyBee:
+      description: 꿀벌에 대한 표현
+      allOf:
+        - $ref: '#/components/schemas/Pet'
+        - type: object
+          properties:
+            honeyPerDay:
+              type: number
+              description: 하루 평균 꿀 생산량(온스)
+              example: 3.14
+              multipleOf: .01
+              default: 0
+          required:
+            - honeyPerDay
+    Id:
+      type: integer
+      format: int64
+      readOnly: true
+    Order:
+      type: object
+      properties:
+        id:
+          description: 주문 ID
+          allOf:
+            - $ref: '#/components/schemas/Id'
+        petId:
+          description: 반려동물 ID
+          allOf:
+            - $ref: '#/components/schemas/Id'
+        quantity:
+          type: integer
+          format: int32
+          minimum: 1
+          default: 1
+        shipDate:
+          description: 예상 배송일
+          type: string
+          format: date-time
+        status:
+          type: string
+          description: 주문 상태
+          enum:
+            - placed
+            - approved
+            - delivered
+        complete:
+          description: 주문 완료 여부
+          type: boolean
+          default: false
+          readOnly: true
+        requestId:
+          description: 고유 요청 ID
+          type: string
+          writeOnly: true
+      xml:
+        name: Order
+    Pet:
+      type: object
+      description: 반려동물
+      required:
+        - name
+        - photoUrls
+        - tags
+      discriminator:
+        propertyName: petType
+        mapping:
+          cat: '#/components/schemas/Cat'
+          dog: '#/components/schemas/Dog'
+          bee: '#/components/schemas/HoneyBee'
+      properties:
+        id:
+          externalDocs:
+            description: '추가 정보를 확인하세요'
+            url: 'https://example.com'
+          description: 반려동물 ID
+          allOf:
+            - $ref: '#/components/schemas/Id'
+        category:
+          description: 반려동물이 속한 카테고리
+          allOf:
+            - $ref: '#/components/schemas/Category'
+        name:
+          description: 반려동물 이름
+          type: string
+          example: Guru
+        photoUrls:
+          description: 반려동물 사진 URL 목록
+          type: array
+          maxItems: 20
+          xml:
+            name: photoUrl
+            wrapped: true
+          items:
+            type: string
+            format: url
+        friend:
+          allOf:
+            - $ref: '#/components/schemas/Pet'
+        tags:
+          description: 반려동물에 연결된 태그
+          type: array
+          minItems: 1
+          xml:
+            name: tag
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Tag'
+        status:
+          type: string
+          description: 스토어 내 반려동물 상태
+          enum:
+            - available
+            - pending
+            - sold
+          x-enumDescriptions:
+            available: 반려동물이 이용 가능함
+            pending: 반려동물이 판매 진행 중임
+            sold: |
+              반려동물이 판매 완료됨.
+
+              이 설명은 줄바꿈을 포함할 수 있으며 [링크](https://docusaurus.io/)도 포함할 수 있습니다.
+        petType:
+          description: 반려동물 유형
+          type: string
+          oneOf:
+            - $ref: '#/components/schemas/Cat'
+            - $ref: '#/components/schemas/Dog'
+            - $ref: '#/components/schemas/HoneyBee'
+      xml:
+        name: Pet
+    Tag:
+      type: object
+      description: 반려동물 태그
+      properties:
+        id:
+          description: 태그 ID
+          allOf:
+            - $ref: '#/components/schemas/Id'
+        name:
+          description: 태그명
+          type: string
+          minLength: 1
+      xml:
+        name: Tag
+    User:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        pet:
+          oneOf:
+            - $ref: '#/components/schemas/Pet'
+            - $ref: '#/components/schemas/Tag'
+        username:
+          description: 사용자가 제공한 사용자명
+          type: string
+          minLength: 4
+          example: John78
+        firstName:
+          description: 이름
+          type: string
+          minLength: 1
+          example: John
+        lastName:
+          description: 성
+          type: string
+          minLength: 1
+          example: Smith
+        email:
+          description: 이메일 주소
+          type: string
+          format: email
+          example: john.smith@example.com
+        password:
+          type: string
+          description: >-
+            사용자 비밀번호. 대문자·소문자·숫자를 혼합해야 합니다.
+          format: password
+          minLength: 8
+          pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
+          example: drowssaP123
+        phone:
+          description: 국제 형식의 전화번호
+          type: string
+          pattern: '/^\+(?:[0-9]-?){6,14}[0-9]$/'
+          example: +1-202-555-0192
+        userStatus:
+          description: 사용자 상태
+          type: integer
+          format: int32
+      xml:
+        name: User
+  requestBodies:
+    Pet:
+      content:
+        application/json:
+          schema:
+            allOf:
+              - description: 내 반려동물
+                title: 페티
+              - $ref: '#/components/schemas/Pet'
+          example:
+            summary: 훌륭한 예시!
+            category:
+              name: Great Dane
+              sub:
+                prop1: Just a test property
+            name: Pepper
+            photoUrls:
+              - https://assets.orvis.com/is/image/orvisprd/great-dane
+            tags:
+              - name: Great Danes
+            status: pending
+            petType:
+              huntingSkill: lazy
+        application/xml:
+          schema:
+            type: 'object'
+            properties:
+              name:
+                type: string
+                description: 만세
+      description: 스토어에 추가할 반려동물 객체
+      required: true
+    UserArray:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+      description: 사용자 객체 목록
+      required: true
+  securitySchemes:
+    petstore_auth:
+      description: |
+        계정 자격 증명을 보호하면서 데이터에 접근합니다.
+        OAuth2는 보다 안전하고 보안적인 접근 방식을 제공합니다.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'http://petstore.swagger.io/api/oauth/dialog'
+          scopes:
+            'write:pets': 내 계정의 반려동물 수정
+            'read:pets': 내 반려동물 조회
+    api_key:
+      description: >
+        이 샘플에서는 권한 필터를 테스트하기 위해 `special-key` API 키를 사용할 수 있습니다.
+      type: apiKey
+      name: api_key
+      in: header
+    BasicAuth:
+      type: http
+      scheme: basic
+    BearerAuth:
+      type: http
+      scheme: bearer
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    OpenID:
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://example.com/oauth/authorize
+          tokenUrl: https://example.com/oauth/token
+          scopes:
+            read: 읽기 접근 권한
+            write: 쓰기 접근 권한
+            admin: 관리자 작업 접근 권한
+x-webhooks:
+  newPet:
+    post:
+      summary: 새 반려동물
+      description: 시스템에 등록된 새 반려동물 정보
+      operationId: newPet
+      tags:
+        - pet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+      responses:
+        '200':
+          description: 데이터를 성공적으로 수신했음을 나타내는 200 상태를 반환합니다
